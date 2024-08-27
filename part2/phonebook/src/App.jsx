@@ -31,7 +31,7 @@ const App = () => {
                 number: newNumber
             }
 
-            if (persons.every(person => person.name != newName)) {
+            if (persons.every(person => person.name.toLowerCase() != newName.toLowerCase())) {
                 setPersons(persons.concat(contact))
             }
             else {
