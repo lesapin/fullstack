@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 
 import Filter from './components/Filter'
 import Numbers from './components/Numbers'
 import Form from './components/Form'
+
+import contactService from './services/contacts'
 
 const App = () => {
       const [persons, setPersons] = useState([]) 
@@ -23,19 +24,38 @@ const App = () => {
             setFilter(event.target.value)
       }
 
+      const handleDelete = (id, name) => {
+        if (window.confirm(`Delete ${name}?`)) {
+            contactService.remove(id)
+            setPersons(persons.filter(person => person.id != id))
+        }
+      }
+
       const saveContact = (event) => {
             event.preventDefault()
 
             const contact = {
                 name: newName,
-                number: newNumber
+                number: newNumber,
             }
 
-            if (persons.every(person => person.name.toLowerCase() != newName.toLowerCase())) {
-                setPersons(persons.concat(contact))
-            }
-            else {
-                alert(`${newName} is already added to phonebook`)
+            const person = persons.find(person => 
+                person.name.toLowerCase() === newName.toLowerCase())
+
+            if (typeof person === 'undefined') {
+                contactService
+                    .post(contact)
+                    .then(response => {
+                        setPersons(persons.concat(response))
+                    })
+            } else {
+                if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+                    contactService
+                        .update(person.id, {...person, number: contact.number})
+                        .then(response => {
+                            setPersons(persons.map(person => person.id === response.data.id ? response.data : person))
+                        })
+                }
             }
 
             setNewName('')
@@ -43,11 +63,11 @@ const App = () => {
       }
 
       useEffect(() => {
-        axios
-          .get('http://localhost:3001/persons')
-          .then(response => {
-            setPersons(response.data)
-          })
+        contactService
+            .getAll()
+            .then(response => {
+                setPersons(response)
+            })
       }, [])
     
       return (
@@ -64,7 +84,7 @@ const App = () => {
             </div>
             <h2>Numbers</h2>
             <div>
-                <Numbers persons={persons} filter={filter} />
+                <Numbers persons={persons} filter={filter} handleDelete={handleDelete} />
             </div>
         </>
       )
