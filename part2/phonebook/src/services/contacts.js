@@ -19,4 +19,4 @@ const update = (id, newContact) => {
     return axios.put(`${baseUrl}/${id}`, newContact)
 }
 
-export default { post, getAll, remove, update }
+export default { getAll, post, remove, update }

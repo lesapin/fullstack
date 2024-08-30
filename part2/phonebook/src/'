@@ -12,7 +12,7 @@ const App = () => {
       const [newName, setNewName] = useState('')
       const [newNumber, setNewNumber] = useState('')
       const [filter, setFilter] = useState('')
-      const [message, setMessage] = useState({ content: null, style: { color: 'green' }})
+      const [message, setMessage] = useState({ content: null, style: { color: green }})
 
       const handleName = (event) => {
             setNewName(event.target.value)
@@ -44,20 +44,19 @@ const App = () => {
             const person = persons.find(person => 
                 person.name.toLowerCase() === newName.toLowerCase())
 
-            if (typeof person === 'undefined' && newName !== '' && newNumber !== '') {
+            if (typeof person === 'undefined') {
                 contactService
                     .post(contact)
                     .then(response => {
                         setPersons(persons.concat(response))
                     })
-                setMessage({ 
-                    content: `Added ${newName}`, 
-                    style: { color: 'green' }
-                })
+                
+                setStyle({ color: 'green' })
+                setMessage(`Added ${newName}`)
                 setTimeout(() => {
-                    setMessage({ content: null, style: {}})
+                    setMessage(null)
                 }, 2000)
-            } else if (newName !== '' && newNumber !== '') {
+            } else {
                 if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
                     contactService
                         .update(person.id, {...person, number: contact.number})
@@ -65,20 +64,17 @@ const App = () => {
                             setPersons(persons.map(person => person.id === response.data.id ? response.data : person))
                         })
                         .catch(error => {
-                            setMessage({ 
-                                content: `Information of ${newName} has already been removed from server`, 
-                                style: { color: 'red' }
-                            })
+                            setStyle({ color: 'red' })
+                            setMessage(`Information of ${newName} has already been removed from server`)
                             setTimeout(() => {
-                                setMessage({ content: null, style: {}})
+                                setMessage(null)
                             }, 2000)
                         })
-                    setMessage({ 
-                        content: `Updated ${newName}`, 
-                        style: { color: 'green' }
-                    })
+                    
+                    setStyle({ color: 'green' })
+                    setMessage(`Updated ${newName}`)
                     setTimeout(() => {
-                        setMessage({ content: null, style: {}})
+                        setMessage(null)
                     }, 2000)
                 }
             }
@@ -94,11 +90,11 @@ const App = () => {
                 setPersons(response)
             })
       }, [])
-
+    
       return (
         <>
             <h2>Phonebook</h2>
-            <Notification message={message.content} style={message.style} />
+            <Notification message={message} style={style} />
             <div>
                 <Filter value={filter} handler={handleFilter} />
             </div>
