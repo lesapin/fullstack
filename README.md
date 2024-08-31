@@ -1,2 +1,2 @@
 # fullstack
-excercises for https://fullstackopen.com/
+excercises for https://fullstackopen.com/en

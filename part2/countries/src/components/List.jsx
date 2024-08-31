@@ -1,4 +1,4 @@
-const List = ({ countries }) => {
+const List = ({ countries, handleShow }) => {
     if (countries === null) {
         return ("Too many countries match, specify another filter")
     }
@@ -7,7 +7,8 @@ const List = ({ countries }) => {
         <>
         {countries.map(country => 
             <div key={country.code}>
-                {country.name}
+                {country.name} 
+                <button value={country.name} onClick={handleShow}>show</button>
             </div>)
         }
         </>
