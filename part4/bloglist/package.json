@@ -4,7 +4,8 @@
   "description": "part 4 exercises",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "test": "node --test"
   },
   "author": "hurtsi",
   "license": "ISC",
