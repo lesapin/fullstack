@@ -1,35 +1,59 @@
 const blogRouter = require('express').Router()
 const Blog = require('../models/blog')
 
-blogRouter.get('/', (req, res) => {
-  Blog.find({}).then(blog => {
+blogRouter.get('/', async (req, res) => {
+  try {
+    const blog = await Blog.find({})
     res.json(blog)
-  })
-  .catch(err => next(err))
+  } 
+  catch(exception) {
+    next(exception)
+  }
 })
 
-blogRouter.get('/:id', (req, res, next) => {
-  Blog
-    .findById(req.params.id)
-    .then(blog => {
-      if (blog) {
-        res.json(blog)
-      } else {
-        res.status(404).end()
-      }
-    })
-    .catch(err => next(err))
+blogRouter.get('/:id', async (req, res, next) => {
+  try {
+    const blog = await Blog.findById(req.params.id)
+    if (blog) {
+      res.json(blog)
+    } else {
+      res.status(404).end()
+    }
+  }
+  catch (exception) {
+    next(exception)
+  }
 })
 
-blogRouter.post('/', (request, response) => {
+blogRouter.delete('/:id', async (req, res, next) => {
+  try {
+    await Blog.findByIdAndDelete(req.params.id)
+    res.status(204).end()
+  }
+  catch (exception) {
+    next(exception)
+  }
+})
+
+blogRouter.post('/', async (request, response, next) => {
   const blog = new Blog(request.body)
 
-  blog
-    .save()
-    .then(result => {
-      response.status(201).json(result)
-    })
-    .catch(err => next(err))
+  try {
+    const savedBlog = await blog.save()
+    response.status(201).json(savedBlog)
+  } 
+  catch (exception) {
+    next(exception)
+  }
 })
 
+blogRouter.put('/:id', async (req, res, next) => {
+  try {
+    const newBlog = await Blog.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    res.json(newBlog)    
+  }
+  catch (exception) {
+    next(exception)
+  }
+})
 module.exports = blogRouter

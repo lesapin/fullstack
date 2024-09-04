@@ -1,6 +1,5 @@
 const express = require('express')
-const app = express()
-const mongoose = require('mongoose')
+require('express-async-errors')
 
 const config = require('./utils/config')
 const logger = require('./utils/logger')
@@ -8,6 +7,7 @@ const middleware = require('./utils/middleware')
 const blogRouter = require('./controllers/blog')
 
 const cors = require('cors')
+const mongoose = require('mongoose')
 
 mongoose.connect(config.MONGODB)
   .then(() => {
@@ -16,6 +16,8 @@ mongoose.connect(config.MONGODB)
   .catch(err => {
     logger.error('error:', err.message)
   })
+
+const app = express()
 
 app.use(cors())
 app.use(express.static('dist'))
