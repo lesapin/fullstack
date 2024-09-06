@@ -17,8 +17,31 @@ const create = async (blog) => {
     headers: { Authorization: auth }
   }
 
-  const response = await axios.post(baseUrl, blog, config)
-  return response
+  const result = await axios.post(baseUrl, blog, config)
+  return result
 }
 
-export default { getAll, setAuth, create }
+const remove = async (blog) => {
+  const config = {
+    headers: { Authorization: auth }
+  }
+
+  const result = await axios.delete(`${baseUrl}/${blog.id}`, config)
+  return result
+}
+
+const addLike = async (blog) => {
+  const config = {
+    headers: { Authorization: auth }
+  }
+
+  const newBlog = {
+    ...blog,
+    likes: blog.likes + 1
+  }
+
+  const result = await axios.put(`${baseUrl}/${blog.id}`, newBlog, config)
+  return result
+}
+
+export default { getAll, setAuth, create, remove, addLike }

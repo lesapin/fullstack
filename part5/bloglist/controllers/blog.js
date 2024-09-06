@@ -89,8 +89,16 @@ blogRouter.post('/', async (request, response, next) => {
 })
 
 blogRouter.put('/:id', async (req, res, next) => {
+  const user = req.user
+  const blog = req.body
+
+  const updatedBlog = {
+    ...blog,
+    user: user.id
+  }
+
   try {
-    const newBlog = await Blog.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    const newBlog = await Blog.findByIdAndUpdate(req.params.id, updatedBlog, { new: true })
     res.json(newBlog)    
   }
   catch (exception) {

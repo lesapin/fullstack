@@ -16,7 +16,7 @@ const Status = ({ message, color }) => {
   return (
     <div style={boxStyle}>
       {message}
-    </div>  
+    </div>
   )
 }
 

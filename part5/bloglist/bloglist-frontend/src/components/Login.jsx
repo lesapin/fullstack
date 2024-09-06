@@ -10,7 +10,7 @@ const Login = ({ username, setUsername, password, setPassword, handleLogin }) =>
       </div>
       <button type="submit">login</button>
     </form>
-  </div> 
- )
+  </div>
+)
 
 export default Login
