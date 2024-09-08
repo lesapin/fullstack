@@ -8,22 +8,18 @@ const Create = ({ handleCreate }) => {
   const resetForm = (event) => {
     handleCreate(event)
 
+    /*
     setTitle('')
     setAuthor('')
     setUrl('')
+    */
   }
 
   return (
-    <form onSubmit={resetForm}>
-      <div>
-        title: <input type="text" value={title} name="Title" onChange={({ target }) => setTitle(target.value)} />
-      </div>
-      <div>
-        author: <input type="text" value={author} name="Author" onChange={({ target }) => setAuthor(target.value)} />
-      </div>
-      <div>
-        url: <input type="text" value={url} name="Url" onChange={({ target }) => setUrl(target.value)} />
-      </div>
+    <form className='createForm' onSubmit={resetForm}>
+      title: <input type="text" value={title} id="Title" onChange={({ target }) => setTitle(target.value)} />
+      author: <input type="text" value={author} id="Author" onChange={({ target }) => setAuthor(target.value)} />
+      url: <input type="text" value={url} id="Url" onChange={({ target }) => setUrl(target.value)} />
       <button type="submit">create</button>
     </form>
   )
