@@ -1,6 +1,6 @@
 import { isNotNumber } from './utils';
 
-interface Summary {
+export interface Summary {
   periodLength: number;
   trainingDays: number;
   success: boolean;
@@ -23,11 +23,11 @@ const parseArgs = (args: string[]): Summary => {
   } else {
     throw new Error('Provided values were not numbers!');
   }
-}
+};
 
-const calculateExercises = (daily: Array<number>, target: number): Summary => {
+export const calculateExercises = (daily: number[], target: number): Summary => {
   const periodLength = daily.length;
-  const average = daily.reduce((acc: number, cur: number) => acc + cur) / periodLength;
+  const average = daily.reduce((acc: number, cur: number) => acc + cur, 0) / periodLength;
   
   let rating: number;
   let ratingDescription: string;
@@ -40,7 +40,7 @@ const calculateExercises = (daily: Array<number>, target: number): Summary => {
     rating = 2;
     ratingDescription = "You almost reached the daily exercise target";
   }
-  else if (target - average <= 2) {
+  else {
     rating = 1;
     ratingDescription = "You didn't reach the daily exercise target, try again next week!";
   }
@@ -53,8 +53,8 @@ const calculateExercises = (daily: Array<number>, target: number): Summary => {
     ratingDescription,
     target,
     average  
-  }
-}
+  };
+};
 
 try {
   console.log(parseArgs(process.argv));
